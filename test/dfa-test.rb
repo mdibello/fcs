@@ -5,7 +5,7 @@ class DFA_TEST < Test::Unit::TestCase
 
   def setup
 
-    even-length = Struct::DFA.new(
+    @even_length = Struct::DFA.new(
       [:a, :b],
       [0, 1],
       { [:a, 0] => :b, [:a, 1] => :b, [:b, 0] => :a, [:b, 1] => :a },
@@ -16,9 +16,7 @@ class DFA_TEST < Test::Unit::TestCase
   end
 
   def test_fail
-
-    assert(even-length.accepts "", "Incorrectly rejects even-length \"\"")
-
+    assert(@even_length.accepts(""), "Incorrectly rejects even-length \"\"")
   end
 
 end
