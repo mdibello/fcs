@@ -4,7 +4,7 @@
 
 Struct.new("DFA", :Q, :sigma, :delta, :q0, :F) do
 
-  def run_dfa dfa w
+  def accepts w
 
     current_state = q0
 
@@ -14,6 +14,12 @@ Struct.new("DFA", :Q, :sigma, :delta, :q0, :F) do
 
     return true if F.contains current_state
     return false
+
+  end
+
+  def rejects w
+
+    return !(accepts w)
 
   end
 
