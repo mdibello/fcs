@@ -7,13 +7,30 @@ require_relative './util.rb'
 class NFA
 
   def initialize states, sigma, delta, q0, final
+
+    new_delta = {}
+    (powerset states).each do |q|
+      sigma.each do |c|
+        new_delta[[q, c]] = []
+        q.each do |x|
+          new_delta[[q, c]].push delta[[x, c]] if delta.has_key? [x, c]
+        end
+        if new_delta[[q, c]] == []
+          new_delta.delete [q, c]
+        else
+          new_delta[[q, c]].flatten!
+        end
+      end
+    end
+      
     @DFA = DFA.new(
-      powerset states,
+      (powerset states),
       sigma,
-      # delta
+      new_delta,
       [q0],
       (powerset states).select { |q| q & final != [] }
     )
+
   end
 
   def accepts w
