@@ -13,12 +13,12 @@ class NFA_TEST < Test::Unit::TestCase
       [:a]
     )
 
-    @odd_length = NFA.new(
-      [:q, :r, :s],
-      ['0', '1'],
-      { [:q, '0'] => :s, [:q, '1'] => :r, [:r, '0'] => :q, [:r, :e] => :s, [:s, :e] => :r, [:s, '1'] => :q },
+    @two_or_three = NFA.new(
+      [:q, :r, :s, :t, :u, :v],
+      ['0'],
+      { [:q, :e] => [:r, :t], [:r, '0'] => :s, [:s, '0'] => :r, [:t, '0'] => :u, [:u, '0'] => :v, [:v, '0'] => :t },
       :q,
-      [:s]
+      [:r, :t]
     )
 
   end
@@ -34,13 +34,13 @@ class NFA_TEST < Test::Unit::TestCase
       assert(@one_third_last.rejects(w), "Incorrectly accepts one_third_last \"#{w}\"")
     end
 
-    a = ['0', '1', '101', '1111111111111']
-    r = ['', '01', 'as', 'dsf', '11111111']
+    a = ['00', '000', '000000']
+    r = ['0', '00000', '1110001110001', 'kk', 'uu11']
     a.each do |w|
-      assert(@odd_length.accepts(w), "Incorrectly rejects odd_length \"#{w}\"")
+      assert(@two_or_three.accepts(w), "Incorrectly rejects two_or_three \"#{w}\"")
     end
     r.each do |w|
-      assert(@odd_length.rejects(w), "Incorrectly accepts odd_length \"#{w}\"")
+      assert(@two_or_three.rejects(w), "Incorrectly accepts two_or_three \"#{w}\"")
     end
 
   end
