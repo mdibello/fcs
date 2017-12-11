@@ -21,6 +21,14 @@ class DFA_TEST < Test::Unit::TestCase
       [:y]
     )
 
+    @empty = DFA.new(
+      [:x, :y],
+      ['0', '1'],
+      { [:x, '1'] => :x, [:x, '0'] => :y, [:y, '0'] => :y, [:y, '1'] => :x },
+      :x,
+      []
+    )
+
   end
 
   def test_fail
@@ -42,6 +50,10 @@ class DFA_TEST < Test::Unit::TestCase
     r.each do |w|
       assert(@even_value.rejects(w), "Incorrectly accepts even-value \"#{w}\"")
     end
+
+    assert(@even_length.e_dfa, "Incorrectly states even_length as empty")
+    assert(@even_value.e_dfa, "Incorrectly states even_value as empty")
+    assert(!(@empty.e_dfa), "Incorrectly states empty as not empty")
 
   end
 

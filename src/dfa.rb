@@ -30,4 +30,24 @@ class DFA
     return !(accepts w)
   end
 
+  def e_dfa
+    visited_states = []
+    visited_states.push @q0
+    dfa_dfs @q0, visited_states
+    print visited_states
+    print @F
+    return (visited_states & @F).empty?
+  end
+
+  def dfa_dfs q, visited_states
+    @sigma.each do |c|
+      if @delta.has_key? [q, c]
+        unless visited_states.include? @delta[[q, c]]
+          visited_states.push @delta[[q, c]]
+          dfa_dfs @delta[[q, c]], visited_states
+        end
+      end
+    end
+  end
+
 end
