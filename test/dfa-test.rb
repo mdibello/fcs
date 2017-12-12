@@ -31,7 +31,7 @@ class DFA_TEST < Test::Unit::TestCase
 
   end
 
-  def test_fail
+  def test_dfa
 
     a = ['', '01', '1011', '1111111111111100']
     r = ['1', '111', '00001', '1110001110001', 'kk', 'uu11']
@@ -51,10 +51,56 @@ class DFA_TEST < Test::Unit::TestCase
       assert(@even_value.rejects(w), "Incorrectly accepts even-value \"#{w}\"")
     end
 
-    assert(@even_length.e_dfa, "Incorrectly states even_length as empty")
-    assert(@even_value.e_dfa, "Incorrectly states even_value as empty")
-    assert(!(@empty.e_dfa), "Incorrectly states empty as not empty")
+  end
 
+  def test_e_dfa
+    assert(!(@even_length.e_dfa), "Incorrectly states even_length as empty")
+    assert(!(@even_value.e_dfa), "Incorrectly states even_value as empty")
+    assert(@empty.e_dfa, "Incorrectly states empty as not empty")
+  end
+
+  def test_invert
+
+    r = ['', '01', '1011', '1111111111111100']
+    a = ['1', '111', '00001', '1110001110001']
+    a.each do |w|
+      assert(@even_length.invert.accepts(w), "Incorrectly rejects even-length \"#{w}\"")
+    end
+    r.each do |w|
+      assert(@even_length.invert.rejects(w), "Incorrectly accepts even-length \"#{w}\"")
+    end
+
+    r = ['0', '10', '000', '111111110']
+    a = ['1', '11', '111', '100000001']
+    a.each do |w|
+      assert(@even_value.invert.accepts(w), "Incorrectly rejects even-value \"#{w}\"")
+    end
+    r.each do |w|
+      assert(@even_value.invert.rejects(w), "Incorrectly accepts even-value \"#{w}\"")
+    end
+
+  end
+
+  def test_union
+    a = ['0', '00', '000', '11', '1010', '1111111111111100']
+    r = ['1', '111', '101', '00001', '1110001110001']
+    a.each do |w|
+      assert(union(@even_length, @even_value).accepts(w), "Incorrectly rejects \"#{w}\"")
+    end
+    r.each do |w|
+      assert(union(@even_length, @even_value).rejects(w), "Incorrectly accepts \"#{w}\"")
+    end
+  end
+
+  def test_intersect
+    a = ['00', '1010', '1111111111111100']
+    r = ['0', '1', '01', '111', '100', '00001', '1110001110001']
+    a.each do |w|
+      assert(intersect(@even_length, @even_value).accepts(w), "Incorrectly rejects \"#{w}\"")
+    end
+    r.each do |w|
+      assert(intersect(@even_length, @even_value).rejects(w), "Incorrectly accepts \"#{w}\"")
+    end
   end
 
 end
