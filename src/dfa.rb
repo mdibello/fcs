@@ -96,3 +96,7 @@ def intersect d1, d2
     (d1.states.product d2.states).select { |q| (d1.final.include? q[0]) && (d2.final.include? q[1]) }
   )
 end
+
+def eq_dfa d1, d2
+  return union(intersect(d1, d2.invert), intersect(d1.invert, d2)).e_dfa
+end
